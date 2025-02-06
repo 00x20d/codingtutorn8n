@@ -1,0 +1,110 @@
+{
+  "Frontend": {
+    "Internet": [
+      "How does the internet work?",
+      "What is HTTP?",
+      "What is Domain Name?",
+      "What is hosting?",
+      "DNS and how it works?",
+      "Browsers and how they work?"
+    ],
+    "HTML": [
+      "Learn the basics",
+      "Writing Semantic HTML",
+      "Forms and Validations",
+      "Accessibility",
+      "SEO Basics"
+    ],
+    "CSS": [
+      "Learn the basics",
+      "Making Layouts",
+      "Responsive Design",
+      "CSS-in-JS",
+      "CSS Modules",
+      "Styled Components",
+      "Tailwind",
+      "CSS Architecture",
+      "CSS Preprocessors",
+      "BEM",
+      "Sass",
+      "PostCSS",
+      "Panda CSS",
+      "Shadcn UI",
+      "Mantine"
+    ],
+    "JavaScript": [
+      "Learn the Basics",
+      "Fetch API / Ajax (XHR)",
+      "Learn DOM Manipulation"
+    ],
+    "Version Control Systems": ["Git", "GitHub", "GitLab", "Bitbucket"],
+    "Package Managers": ["yarn", "pnpm", "npm"],
+    "Frameworks": ["Angular", "Vue.js", "React", "Svelte", "Solid JS", "Qwik"],
+    "Build Tools": [
+      "Linters and Formatters",
+      "Module Bundlers",
+      "Parcel",
+      "Rollup",
+      "Webpack",
+      "esbuild",
+      "Vite",
+      "Prettier",
+      "ESLint"
+    ],
+    "Testing": ["Vitest", "Jest", "Playwright", "Cypress"],
+    "Web Security": [
+      "Authentication Strategies",
+      "Web Security Basics",
+      "CORS",
+      "HTTPS",
+      "Content Security Policy",
+      "OWASP Security Risks",
+      "JWT",
+      "OAuth",
+      "SSO",
+      "Basic Auth",
+      "Session Auth"
+    ],
+    "Web Components": ["Custom Elements", "HTML Templates", "Shadow DOM"],
+    "Type Checkers": ["TypeScript"],
+    "Server-Side Rendering (SSR)": [
+      "Svelte",
+      "Vue.js",
+      "Angular",
+      "React",
+      "react-router",
+      "Next.js",
+      "Nuxt.js",
+      "Svelte Kit"
+    ],
+    "GraphQL": ["Apollo", "Relay Modern"],
+    "Static Site Generators": [
+      "Vuepress",
+      "Nuxt.js",
+      "Astro",
+      "Eleventy",
+      "Next.js"
+    ],
+    "Progressive Web Apps (PWAs)": [],
+    "Mobile Apps": ["React Native", "Flutter", "Ionic"],
+    "Desktop Apps": ["TypeScript", "Node.js", "Electron", "Tauri", "Flutter"],
+    "Performance": [
+      "PRPL Pattern",
+      "RAIL Model",
+      "Performance Metrics",
+      "Using Lighthouse",
+      "Using DevTools",
+      "Performance Best Practices"
+    ],
+    "Browser APIs": [
+      "Web Sockets",
+      "Server Sent Events",
+      "Service Workers",
+      "Location",
+      "Notifications",
+      "Device Orientation",
+      "Payments",
+      "Credentials"
+    ]
+  }
+}

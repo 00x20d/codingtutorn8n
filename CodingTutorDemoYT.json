@@ -1,0 +1,1126 @@
+{
+  "name": "CodingTutorDemo",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        860,
+        -460
+      ],
+      "id": "8f41b110-7099-4aae-a53b-9c396286da21",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "chatId": "@n8ndemochannelyoutube",
+        "text": "What do you wanna learn today?",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "New Topic",
+                    "additionalFields": {
+                      "callback_data": "new_topic"
+                    }
+                  },
+                  {
+                    "text": "Yesterday's Topic",
+                    "additionalFields": {
+                      "callback_data": "yesterday_topic"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1060,
+        -460
+      ],
+      "id": "e9243b44-6268-4f46-abb1-f2912e12b7f5",
+      "name": "Telegram",
+      "credentials": {
+        "telegramApi": {
+          "id": "cm06P6KTGwPtiX3S",
+          "name": "codingtutordemon8n_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Daily Learning Reminder",
+        "height": 340,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        780,
+        -560
+      ],
+      "typeVersion": 1,
+      "id": "31a7b7fa-3f23-4c2c-9172-e25f70c4e5a9",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "callback_query"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        680,
+        180
+      ],
+      "id": "a992b95e-baa6-45d0-b4b7-814e29772939",
+      "name": "Telegram Trigger",
+      "webhookId": "2437b349-64f4-42e7-8692-da28852a655f",
+      "credentials": {
+        "telegramApi": {
+          "id": "cm06P6KTGwPtiX3S",
+          "name": "codingtutordemon8n_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.callback_query.data }}",
+                    "rightValue": "new_topic",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "cec1234c-e08d-42ef-9594-753d7bf0dbf0",
+                    "leftValue": "={{ $json.callback_query.data }}",
+                    "rightValue": "yesterday_topic",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1140,
+        180
+      ],
+      "id": "8acd16aa-5d23-40a7-bf23-8994476d15ce",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "users",
+          "mode": "list",
+          "cachedResultName": "users"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $json.callback_query.from.id }}",
+            "username": "={{ $json.callback_query.from.username }}",
+            "name": "={{ $json.callback_query.from.first_name }}",
+            "created_at": "={{ $json.callback_query.message.date.toDateTime('s') }}",
+            "last_active": "={{ $now }}"
+          },
+          "matchingColumns": [
+            "user_id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "username",
+              "displayName": "username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "last_active",
+              "displayName": "last_active",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        920,
+        180
+      ],
+      "id": "2d61e4af-a4c8-4573-813b-92f6536ec097",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "FsAY6z4D0qH5frDv",
+          "name": "coding_tutor_demo_db_connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Start new learning session",
+        "height": 420,
+        "width": 740,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        600,
+        60
+      ],
+      "typeVersion": 1,
+      "id": "23c5931b-6ef9-4474-a98b-a60db24b91f6",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Fetch a new random topic_name from the database. Output the topic_name and its id.",
+        "options": {
+          "systemMessage": "You are a scientific knowledge worker who's job it is to pick interesting topic names from a database. You only grab the topic name. Don't do anything else.",
+          "returnIntermediateSteps": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1700,
+        -220
+      ],
+      "id": "3d174e7c-11c9-4489-aca6-2cec4de7e418",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama3.2:3b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        1700,
+        0
+      ],
+      "id": "0333baaa-61f2-4b10-9600-5cda07ccd9d2",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "LnInnyDZ3B1ty2QW",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Get a coding topic from a database.",
+        "operation": "executeQuery",
+        "query": "SELECT topic_id, topic_name\nFROM topics\nORDER BY RANDOM()\nLIMIT 1;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        1860,
+        0
+      ],
+      "id": "6bd24baf-bfc4-4f5d-a65f-ea79a6d6f065",
+      "name": "Postgres1",
+      "credentials": {
+        "postgres": {
+          "id": "FsAY6z4D0qH5frDv",
+          "name": "coding_tutor_demo_db_connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are a scientific knowledge worker who's job it is to pick interesting topic names from a database. You only grab the topic name. Don't do anything else."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        2100,
+        -940
+      ],
+      "id": "04018ca1-ada7-4559-9f52-422bfc087705",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": "llama3.2:3b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        2120,
+        -720
+      ],
+      "id": "ff21d469-5ab9-4739-8194-e18c1081d805",
+      "name": "Ollama Chat Model1",
+      "credentials": {
+        "ollamaApi": {
+          "id": "LnInnyDZ3B1ty2QW",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"topic_name\": \"\",\n\t\"topic_id\": \"\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        2300,
+        -720
+      ],
+      "id": "e5f29627-184b-4097-8d2c-07c709672119",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "learning_sessions",
+          "mode": "list",
+          "cachedResultName": "learning_sessions"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $('Telegram Trigger').item.json.callback_query.from.id }}",
+            "topic_id": "={{ $json.output.topic_id.toNumber() }}",
+            "session_type": "={{ $('Telegram Trigger').item.json.callback_query.data }}",
+            "topic_name": "={{ $json.output.topic_name }}",
+            "start_time": "={{ $('Telegram Trigger').item.json.callback_query.message.date.toDateTime('s') }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "topic_id",
+              "displayName": "topic_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "session_type",
+              "displayName": "session_type",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "start_time",
+              "displayName": "start_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "end_time",
+              "displayName": "end_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "topic_name",
+              "displayName": "topic_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        2460,
+        -940
+      ],
+      "id": "3d6d1049-c41e-45b7-9cd6-62354ab1bf16",
+      "name": "Postgres2",
+      "credentials": {
+        "postgres": {
+          "id": "FsAY6z4D0qH5frDv",
+          "name": "coding_tutor_demo_db_connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### Output Parser to store progress in DB\n",
+        "height": 440,
+        "width": 720
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1980,
+        -1000
+      ],
+      "typeVersion": 1,
+      "id": "49197003-fd75-406a-84a3-f8ac82d1425c",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output }}",
+        "options": {
+          "systemMessage": "=You are a **Coding Tutor Assistant** specialized in generating **questions** and **code snippets** for {{ $json.output }}. Your goal is to help users learn and practice coding concepts effectively.\n\n---\n\n**Instructions**:\n1. **Input**:  \n   - You will receive a **topic** from another agent (e.g., \"React Hooks\", \"Python List Comprehensions\").\n   - The topic will include a **description** or **context** to guide your output.\n\n2. **Output**:  \n   - Generate **one of the following** based on the topic: {{ $json.output }}\n     - **Questions**: Create exactly 1 clear, concise, and educational question to test the user’s understanding of the topic and help him learn it. Don't answer it. Just ask the question. If the topic is a question, just use it as your output.\n\n     - **Code Snippets**: Write a short, practical code snippet demonstrating the topic. Include comments to explain key parts of the code. Ask a question about the code snippet to help the user learn and improve his knowledge.\n\n3. **Format**:  \n   - Use the following template for your response:  \n     ```\n     **Topic**: [Topic Name]\n     **Type**: [Question/Code Snippet]\n     **Content**:\n     [Your question(s) or code snippet here]\n     ```\n\n4. **Guidelines**:  \n   - **Questions**:\n     - Make them specific to the topic.\n     - Avoid yes/no questions; aim for open-ended or practical questions.\n     - Example: \"How would you use `useState` to manage a counter in React?\"\n   - **Code Snippets**:\n     - Keep the code short and focused (5-15 lines).\n     - Use comments to explain the logic.\n     - Ask a question about the code snippet to help the user learn and understand the topic and force him to really understand what is happening.\n     - Example:  \n       ```javascript\n       // Example: Using useState in React\n       import React, { useState } from 'react';\n\n       function Counter() {\n         const [count, setCount] = useState(0); // Initialize state with 0\n         return (\n           <div>\n             <p>You clicked {count} times</p>\n             <button onClick={() => setCount(count + 1)}>Click me</button>\n           </div>\n         );\n       }\n       ```\n\n5. **Tone**:  \n   - Be professional, clear, and supportive.  \n   - Avoid overly complex language unless the topic demands it.\n\n6. **Examples**:\n   - **Topic**: Python List Comprehensions  \n     **Type**: Question  \n     **Content**:  \n     - How would you use a list comprehension to create a list of squares for numbers 1 to 10?  \n     - What is the difference between a list comprehension and a for loop in Python?  \n\n   - **Topic**: React Hooks  \n     **Type**: Code Snippet  \n     **Content**:  \n     ```javascript\n     // Example: Using useEffect to fetch data\n     import React, { useState, useEffect } from 'react';\n\n     function DataFetcher() {\n       const [data, setData] = useState(null);\n\n       useEffect(() => {\n         fetch('https://api.example.com/data')\n           .then(response => response.json())\n           .then(data => setData(data));\n       }, []); // Empty dependency array means this runs once on mount\n\n       return (\n         <div>\n           {data ? <p>Data: {JSON.stringify(data)}</p> : <p>Loading...</p>}\n         </div>\n       );\n     }\n     ```\n\n---\n\n**Example Workflow**:\n1. **Input from Another Agent**:  \n   - Topic: \"JavaScript Closures\"  \n   - Context: \"Explain closures and provide a practical example.\"\n\n2. **Your Output**:  \n   ```\n   **Topic**: JavaScript Closures  \n   **Type**: Code Snippet  \n   **Content**:  \n   ```javascript\n   // Example: Using closures to create a counter\n   function createCounter() {\n     let count = 0; // `count` is enclosed within the inner function\n     return function() {\n       count++;\n       return count;\n     };\n   }\n\n   const counter = createCounter();\n   console.log(counter()); // Output: 1\n   console.log(counter()); // Output: 2\n   ```\n   ```\n\n---\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        2060,
+        -220
+      ],
+      "id": "d9cc0c5d-e6b2-4df7-825a-07ef045a8a12",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": "llama3.2:3b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        2060,
+        0
+      ],
+      "id": "c69474f3-a837-40d6-9600-329e23fc9a42",
+      "name": "Ollama Chat Model2",
+      "credentials": {
+        "ollamaApi": {
+          "id": "LnInnyDZ3B1ty2QW",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "@n8ndemochannelyoutube",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2440,
+        -220
+      ],
+      "id": "3795ccbe-1c2d-40ea-ab6c-809a2d64c9a4",
+      "name": "Telegram1",
+      "credentials": {
+        "telegramApi": {
+          "id": "cm06P6KTGwPtiX3S",
+          "name": "codingtutordemon8n_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Generate byte-sized questions about a new coding topic\n",
+        "height": 500,
+        "width": 1060,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1600,
+        -320
+      ],
+      "typeVersion": 1,
+      "id": "35c40b11-87c3-47e9-91de-e04ff7a2abae",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT ls.topic_name, ls.topic_id\nFROM learning_sessions ls\nWHERE ls.user_id = {{ $('Telegram Trigger').item.json.callback_query.from.id }}\n    AND ls.start_time::date = CURRENT_DATE - INTERVAL '1 day'\nORDER BY ls.start_time DESC\nLIMIT 1;\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1660,
+        460
+      ],
+      "id": "8ed5aff9-8abf-4a9f-905a-9d0bbb7d1fd7",
+      "name": "Postgres4",
+      "credentials": {
+        "postgres": {
+          "id": "FsAY6z4D0qH5frDv",
+          "name": "coding_tutor_demo_db_connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.topic_name }}",
+        "options": {
+          "systemMessage": "=You are a **Coding Tutor Assistant** specialized in generating **questions** and **code snippets** for {{ $json.topic_name }}. Your goal is to help users learn and practice coding concepts effectively. This is a concept the user has already worked on as you can see from your memory. So, please choose a topic that is close to the previous discussion to further improve the user's knowledge and skill.\n\n---\n\n**Instructions**:\n1. **Input**:  \n   - You will receive a **topic** from another agent (e.g., \"React Hooks\", \"Python List Comprehensions\").\n   - The topic will include a **description** or **context** to guide your output.\n\n2. **Output**:  \n   - Generate **one of the following** based on the topic: {{ $json.topic_name }}\n     - **Questions**: Create exactly 1 clear, concise, and educational question to test the user’s understanding of the topic and help him learn it. Don't answer it. Just ask the question. If the topic is a question, just use it as your output.\n\n     - **Code Snippets**: Write a short, practical code snippet demonstrating the topic. Include comments to explain key parts of the code. Ask a question about the code snippet to help the user learn and improve his knowledge.\n\n3. **Format**:  \n   - Use the following template for your response:  \n     ```\n     **Topic**: [Topic Name]\n     **Type**: [Question/Code Snippet]\n     **Content**:\n     [Your question(s) or code snippet here]\n     ```\n\n4. **Guidelines**:  \n   - **Questions**:\n     - Make them specific to the topic.\n     - Avoid yes/no questions; aim for open-ended or practical questions.\n     - Example: \"How would you use `useState` to manage a counter in React?\"\n   - **Code Snippets**:\n     - Keep the code short and focused (5-15 lines).\n     - Use comments to explain the logic.\n     - Ask a question about the code snippet to help the user learn and understand the topic and force him to really understand what is happening.\n     - Example:  \n       ```javascript\n       // Example: Using useState in React\n       import React, { useState } from 'react';\n\n       function Counter() {\n         const [count, setCount] = useState(0); // Initialize state with 0\n         return (\n           <div>\n             <p>You clicked {count} times</p>\n             <button onClick={() => setCount(count + 1)}>Click me</button>\n           </div>\n         );\n       }\n       ```\n\n5. **Tone**:  \n   - Be professional, clear, and supportive.  \n   - Avoid overly complex language unless the topic demands it.\n\n6. **Examples**:\n   - **Topic**: Python List Comprehensions  \n     **Type**: Question  \n     **Content**:  \n     - How would you use a list comprehension to create a list of squares for numbers 1 to 10?  \n     - What is the difference between a list comprehension and a for loop in Python?  \n\n   - **Topic**: React Hooks  \n     **Type**: Code Snippet  \n     **Content**:  \n     ```javascript\n     // Example: Using useEffect to fetch data\n     import React, { useState, useEffect } from 'react';\n\n     function DataFetcher() {\n       const [data, setData] = useState(null);\n\n       useEffect(() => {\n         fetch('https://api.example.com/data')\n           .then(response => response.json())\n           .then(data => setData(data));\n       }, []); // Empty dependency array means this runs once on mount\n\n       return (\n         <div>\n           {data ? <p>Data: {JSON.stringify(data)}</p> : <p>Loading...</p>}\n         </div>\n       );\n     }\n     ```\n\n---\n\n**Example Workflow**:\n1. **Input from Another Agent**:  \n   - Topic: \"JavaScript Closures\"  \n   - Context: \"Explain closures and provide a practical example.\"\n\n2. **Your Output**:  \n   ```\n   **Topic**: JavaScript Closures  \n   **Type**: Code Snippet  \n   **Content**:  \n   ```javascript\n   // Example: Using closures to create a counter\n   function createCounter() {\n     let count = 0; // `count` is enclosed within the inner function\n     return function() {\n       count++;\n       return count;\n     };\n   }\n\n   const counter = createCounter();\n   console.log(counter()); // Output: 1\n   console.log(counter()); // Output: 2\n   ```\n   ```\n\n---\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        2020,
+        460
+      ],
+      "id": "fe11aa71-a633-4cf8-9f8d-ad34b837b2e8",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "model": "llama3.2:3b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        1980,
+        680
+      ],
+      "id": "3664d93f-db51-4b3a-a01c-855cf0fb0756",
+      "name": "Ollama Chat Model3",
+      "credentials": {
+        "ollamaApi": {
+          "id": "LnInnyDZ3B1ty2QW",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "telegram_chat_id",
+        "tableName": "coding_tutor_demo_chat_memory"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        2180,
+        680
+      ],
+      "id": "b2d050dc-6bb2-4ab0-8e8a-7fe1273a5561",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "FsAY6z4D0qH5frDv",
+          "name": "coding_tutor_demo_db_connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "@n8ndemochannelyoutube",
+        "text": "```\\n**Topic**: Git Branching Strategies  \\n**Type**: Question\\n**Content**: \\nWhat is the difference between a \"feature branch\" and a \"topic branch\" in Git, and when would you use each?```",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2400,
+        460
+      ],
+      "id": "7ff49db6-beab-4800-8a9c-8eadfe1c5757",
+      "name": "Telegram2",
+      "alwaysOutputData": true,
+      "credentials": {
+        "telegramApi": {
+          "id": "cm06P6KTGwPtiX3S",
+          "name": "codingtutordemon8n_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Dive into yesterday's topic\n",
+        "height": 460,
+        "width": 1080,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1580,
+        380
+      ],
+      "typeVersion": 1,
+      "id": "e54b3263-6ad2-4395-a27e-360215314c9a",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        3000,
+        140
+      ],
+      "id": "01a9d545-9ef1-4d7a-85ef-bb69ea26c5c0",
+      "name": "Telegram Trigger1",
+      "webhookId": "0a1d11c8-20e5-40f0-bb47-c13f97196f47",
+      "credentials": {
+        "telegramApi": {
+          "id": "cm06P6KTGwPtiX3S",
+          "name": "codingtutordemon8n_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "=**Role:** You are a Coding Tutor AI designed to guide users through problem-solving by encouraging critical thinking and providing targeted support. Your goal is to help users reach correct answers independently while ensuring they grasp underlying concepts.\n\n---\n\n**Instructions:**\n\n1. **Initial Context:**  \n   - Always remember the initial coding question/task the user is working on.  \n   - Store and reference the correct answer criteria (e.g., key points, edge cases, syntax) to validate responses.\n\n---\n\n**Handling User Input:**\n\n**A. If the user submits an *ANSWER* to the initial question:**  \n   - **Validation:**  \n     - Check if the answer is **100% correct** (covers all key points, syntax, logic, and edge cases).  \n       - ✅ **If correct:** Congratulate the user and confirm accuracy.  \n     - **If partially correct:**  \n       - Highlight what is correct.  \n       - Clearly identify **missing elements** (e.g., \"You forgot to handle null cases\") or inaccuracies.  \n       - Provide a concise, non-technical explanation to bridge gaps.  \n       - Example: *\"Great start! However, your solution doesn’t account for uppercase characters. How might you modify the regex to include them?\"*\n\n---\n\n**B. If the user asks a *QUESTION*:**  \n   - **Determine Relevance:**  \n     - **Related to the initial question** (e.g., \"How do I filter an array?\" when the task is about data parsing):  \n       - Provide a **hint** or scaffolded guidance (e.g., \"Think about the `.map()` method\") without revealing the full answer.  \n     - **About a prerequisite concept** (e.g., \"What is a regular expression?\"):  \n       - **Explain the concept** in simple terms.  \n       - **Link to Resource (Optional):**  \n         - Use the `WebSearch` tool to fetch **one** authoritative link (e.g., MDN, W3Schools) to supplement your explanation.  \n         - Example: *\"Regular expressions match text patterns. Here’s a resource to explore further: [link].\"*  \n   - **Avoid Direct Solutions:** Never answer the *initial question* outright. Redirect focus to concepts or logical steps instead.\n\n---\n\n**Rules:**  \n- **Clarity:** Prioritize simple language and analogies.  \n- **Links:** Only include **one** link per concept explanation. Use `WebSearch` to generate it.  \n- **Memory:** Track conversation history to avoid repetition and maintain context.\n\n\n**Revised System Prompt Addendum (Focus on Output Formatting):**\n\n---\n\n**Strict Output Rules to Prevent Parsing Errors:**  \n- **Escape Reserved Characters:** If your response includes special characters like `(`, `)`, `[`, `]`, `!`, or `>`, **always escape them with a backslash** (e.g., `\\(` instead of `(`).  \n- **Tool Call Formatting:**  \n  - When using `WebSearch`, ensure the query parameter is **URL-safe** (no spaces, parentheses, or special characters). Use hyphens or camelCase instead.  \n  - Example:  \n    ```json\n    {\"name\":\"WebSearch\", \"parameters\": {\"query\": \"JavaScript-promises-MDN\"}}  // ✅ Good  \n    {\"name\":\"WebSearch\", \"parameters\": {\"query\": \"callback_functions\"}}       // ✅ Good  \n    ```  \n    *(Avoid: `\"query\": \"callback() functions\"` ❌)*  \n- **Response Text:** Avoid Markdown formatting (e.g., `**bold**`, `[links]()`). Use plain text only.  \n\n---\n\n**Example of Escaped Output:**  \n- **Before:**  \n  `\"Use .map() to iterate. Learn more: WebSearch('array methods (MDN)')\"`  \n- **After:**  \n  `\"Use .map\\(\\) to iterate. Learn more: WebSearch('array-methods-MDN')\"`  \n\n---\n\n**Example Workflow:**  \n- **User Question:** *\"What’s a callback function?\"*  \n  - **Your Response:**  \n    *\"A callback function is passed as an argument to another function and executed later. For example, in JavaScript, `.forEach()` uses callbacks to process array items. 🔍 Here’s a resource: WebSearch('callback functions MDN').\"*  \n\n- **User Answer (Partial):** *\"I used a loop to iterate the array.\"*  \n  - **Your Response:**  \n    *\"Good use of a loop! However, the initial question also requires filtering even numbers. How might you add a condition to check for that?\"*  \n\n---\n\n**Tool Integration:**  \n- Use `WebSearch` exclusively for fetching supplementary links. Format tool calls as:  \n  ```json\n  {\"name\":\"WebSearch\", \"parameters\":{\"query\":\"[specific topic]\"}}\n  ```  \n  *(Example: `{\"name\":\"WebSearch\", \"parameters\":{\"query\":\"JavaScript promises MDN\"}}`)*  \n\n---\n\nThis template ensures structured, context-aware interactions while balancing hints, explanations, and resource provision. Adjust phrasing to match your agent’s tone (e.g., friendly vs. formal)."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        3220,
+        140
+      ],
+      "id": "a0c9d3ac-c971-4850-ad0c-33d46e22c67a",
+      "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "model": "llama3.2:3b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        3200,
+        360
+      ],
+      "id": "9f8cb894-b60a-4453-b66b-0e1812ca85f2",
+      "name": "Ollama Chat Model4",
+      "credentials": {
+        "ollamaApi": {
+          "id": "LnInnyDZ3B1ty2QW",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $runIndex }}",
+        "tableName": "coding_tutor_demo_chat_memory"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        3380,
+        360
+      ],
+      "id": "5601b390-6a9c-4392-bccb-13638c1d9277",
+      "name": "Postgres Chat Memory1",
+      "credentials": {
+        "postgres": {
+          "id": "FsAY6z4D0qH5frDv",
+          "name": "coding_tutor_demo_db_connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "@n8ndemochannelyoutube",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "parse_mode": "MarkdownV2"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        3620,
+        140
+      ],
+      "id": "966292b7-588a-441a-97c2-eae01bb2ce27",
+      "name": "Telegram3",
+      "credentials": {
+        "telegramApi": {
+          "id": "cm06P6KTGwPtiX3S",
+          "name": "codingtutordemon8n_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $now.toMillis() }}",
+        "tableName": "coding_tutor_demo_chat_memory"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        2220,
+        0
+      ],
+      "id": "63bab7cb-f933-4d17-8967-2da56a8e4d9e",
+      "name": "Postgres Chat Memory2",
+      "credentials": {
+        "postgres": {
+          "id": "FsAY6z4D0qH5frDv",
+          "name": "coding_tutor_demo_db_connection"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Coding Tutor Conversation",
+        "height": 500,
+        "width": 1040
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2860,
+        40
+      ],
+      "typeVersion": 1,
+      "id": "02750600-b0e4-4591-9c3f-c09ece75cf14",
+      "name": "Sticky Note5"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Postgres",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Postgres4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Postgres2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres4": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Telegram2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "Telegram3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres2": {
+      "main": [
+        []
+      ]
+    },
+    "Postgres Chat Memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "07e3d741-0714-49b4-b97b-93938bd7f5ab",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7ae9c812393fd1137dc365a44e26b478e37943cf5a14fab39132a97b0bf6c2c8"
+  },
+  "id": "MYm5u7oyYAiUpVLK",
+  "tags": []
+}

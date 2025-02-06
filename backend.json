@@ -1,0 +1,151 @@
+{
+  "Backend": {
+    "Internet": [
+      "How does the internet work?",
+      "What is HTTP?",
+      "Browsers and how they work?",
+      "DNS and how it works?",
+      "What is Domain Name",
+      "What is hosting?"
+    ],
+    "OS and General Knowledge": {
+      "Terminal Usage": [
+        "Basic Terminal Commands",
+        "grep, awk, sed, lsof, curl, wget",
+        "tail, head, less, find, ssh, kill, dig"
+      ],
+      "Operating Systems Knowledge": [
+        "Memory Management",
+        "Interprocess Communication",
+        "I/O Management",
+        "POSIX Basics",
+        "stdin, stdout, stderr, pipes",
+        "Process Management",
+        "Threads and Concurrency",
+        "How OSs work in General"
+      ]
+    },
+    "Version Control Systems": [
+      "Git",
+      "GitHub",
+      "GitLab",
+      "Bitbucket",
+      "Repo hosting services"
+    ],
+    "Learn a Language": [
+      "PHP",
+      "JavaScript",
+      "Python",
+      "Ruby",
+      "Go",
+      "Rust",
+      "Java",
+      "C#"
+    ],
+    "Databases": {
+      "Relational Databases": [
+        "PostgreSQL",
+        "MySQL",
+        "MariaDB",
+        "MS SQL",
+        "Oracle"
+      ],
+      "NoSQL Databases": {
+        "Document DBs": ["MongoDB", "CouchDB"],
+        "Time Series": ["InfluxDB", "TimeScale"],
+        "Realtime": ["Firebase", "RethinkDB"],
+        "Column DBs": ["Cassandra", "HBase"],
+        "Key-Value": ["Redis", "DynamoDB"],
+        "Graph DBs": ["Neo4j"]
+      },
+      "More about Databases": [
+        "ACID",
+        "Transactions",
+        "N+1 Problem",
+        "Database Indexes",
+        "Data Replication",
+        "Sharding Strategies",
+        "CAP Theorem",
+        "Normalization",
+        "Scaling Databases"
+      ]
+    },
+    "APIs": [
+      "REST",
+      "JSON APIs",
+      "SOAP",
+      "HATEOAS",
+      "Open API Specs",
+      "Authentication",
+      "GraphQL",
+      "gRPC"
+    ],
+    "Caching": {
+      "Server Side": ["Redis", "Memcached"],
+      "Client Side": [],
+      "CDN": []
+    },
+    "Web Security": [
+      "CORS",
+      "HTTPS",
+      "Content Security Policy",
+      "OWASP Risks",
+      "SSL/TLS",
+      "MD5 and why not to use it",
+      "SHA Family",
+      "scrypt bcrypt",
+      "Hashing Algorithms"
+    ],
+    "Authentication": [
+      "OAuth",
+      "Basic Auth",
+      "Token Auth",
+      "JWT",
+      "OpenID",
+      "SAML",
+      "Cookie Based"
+    ],
+    "Testing": ["Integration Testing", "Unit Testing", "Functional Testing"],
+    "CI/CD": [],
+    "Design and Development Principles": [
+      "GOF Design Patterns",
+      "Domain Driven Design",
+      "Test Driven Development",
+      "CQRS",
+      "Event Sourcing"
+    ],
+    "Architectural Patterns": [
+      "Monolithic Apps",
+      "Microservices",
+      "SOA",
+      "Serverless",
+      "Service Mesh",
+      "Twelve Factor Apps"
+    ],
+    "Search Engines": ["Elasticsearch", "Solr"],
+    "Message Brokers": ["RabbitMQ", "Kafka"],
+    "Containerization and Virtualization": {
+      "Docker": [],
+      "LXC": [],
+      "Kubernetes": []
+    },
+    "Web Servers": ["Nginx", "Apache", "Caddy", "MS IIS"],
+    "Building for Scale": {
+      "Mitigation Strategies": [
+        "Graceful Degradation",
+        "Throttling",
+        "Backpressure",
+        "Loadshifting",
+        "Circuit Breaker"
+      ],
+      "Migration Strategies": [],
+      "Horizontal vs Vertical Scaling": [],
+      "Observability": [
+        "Metrics logging",
+        "Instrumentation",
+        "Monitoring",
+        "Telemetry"
+      ]
+    }
+  }
+}
